@@ -1,4 +1,4 @@
-# ProyectoTema4SistemasOperativos
+# Proyecto Tema4 SistemasOperativos
 Programa que simula el cambio de contexto entre procesos/hilos.
 # Integrantes:
 + Arzate Angulo Javier Alejandro
