@@ -37,6 +37,7 @@ def obtener_informacion_procesos(procesos , completo , PID):
                 break
         else:
             print("Proceso no encontrado.")
+
 def cambio_de_contexto(procesos, quantum):
     print(f'Cambio de Proceso\n')
     colaprocesos = procesos.copy()
@@ -44,20 +45,36 @@ def cambio_de_contexto(procesos, quantum):
         proc = colaprocesos.pop(0)
         proc.estado = 'EJECUTANDOSE'
         obtener_informacion_procesos(procesos, completo=False, PID=proc.pid)
-        
+        tiempo = min(proc.tiempoRestante, quantum)
+        proc.tiempoRestante -= tiempo
+        if proc.tiempoRestante > 0:
+            if rd.random() < 0.1:  # Simula una interrupción aleatoria 10% de probabilidad
+                proc.estado = ('ESPERANDO I/O')
+                obtener_informacion_procesos(procesos, completo=False, PID=proc.pid)
+                time.sleep(rd.randint(1, 5))  # Simula el tiempo de espera por I/O
+                proc.estado = 'LISTO'
+            else:
+                proc.estado = 'LISTO'
+            colaprocesos.append(proc)   
+        else:   
+            proc.estado = 'TERMINADO'
+            obtener_informacion_procesos(procesos, completo=False, PID=proc.pid)
+            
+    print(f'Todos los procesos han terminado')
     
-    
-
 def main():
     print("Monitoreo del Sistema Operativo\n")
     obtener_informacion_sistema()
     print("\n")
     cantidad_procesos = int(input("Ingrese la cantidad de procesos a mostrar: "))
     procesos = carga_procesos(cantidad_procesos)
-    quantum = int(input("Ingrese el quantum para el cambio de contexto (en segundos): "))
+    #quantum = int(input("Ingrese el quantum para el cambio de contexto (en segundos): "))
+    quantum = 5
     obtener_informacion_procesos(procesos, completo=True, PID=None)
     print("\n")
     cambio_de_contexto(procesos,quantum)
+
+
 if __name__ == "__main__":
     main()
     
