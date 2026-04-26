@@ -25,17 +25,26 @@ def carga_procesos(cantidad):
             break
     return procesos
 
-def obtener_informacion_procesos(procesos):
-    print("Información de Procesos:")
-    for proc in procesos:
-        print(f"PID: {proc.pid} | Nombre: {proc.proc} | Uso: {proc.usage}% | Memoria: {round(proc.memory, 2)}% | Estado: {proc.estado} | Tiempo Restante: {proc.tiempoRestante} [s]")
-
+def obtener_informacion_procesos(procesos , completo , PID):
+    if completo:
+        print("Información de Procesos:")
+        for proc in procesos:
+            print(f"PID: {proc.pid} | Nombre: {proc.proc} | Uso: {proc.usage}% | Memoria: {round(proc.memory, 2)}% | Estado: {proc.estado} | Tiempo Restante: {proc.tiempoRestante} [s]")
+    else:
+        for proc in procesos:
+            if proc.pid == PID:
+                print(f"PID: {proc.pid} | Nombre: {proc.proc} | Uso: {proc.usage}% | Memoria: {round(proc.memory, 2)}% | Estado: {proc.estado} | Tiempo Restante: {proc.tiempoRestante} [s]")
+                break
+        else:
+            print("Proceso no encontrado.")
 def cambio_de_contexto(procesos, quantum):
     print(f'Cambio de Proceso\n')
     colaprocesos = procesos.copy()
     while colaprocesos:
-        proc = colaprocesos.pop()
-        proc.estado = 'EN PROCESO'
+        proc = colaprocesos.pop(0)
+        proc.estado = 'EJECUTANDOSE'
+        obtener_informacion_procesos(procesos, completo=False, PID=proc.pid)
+        
     
     
 
@@ -46,7 +55,7 @@ def main():
     cantidad_procesos = int(input("Ingrese la cantidad de procesos a mostrar: "))
     procesos = carga_procesos(cantidad_procesos)
     quantum = int(input("Ingrese el quantum para el cambio de contexto (en segundos): "))
-    obtener_informacion_procesos(procesos)
+    obtener_informacion_procesos(procesos, completo=True, PID=None)
     print("\n")
     cambio_de_contexto(procesos,quantum)
 if __name__ == "__main__":
