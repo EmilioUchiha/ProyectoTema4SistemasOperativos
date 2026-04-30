@@ -105,13 +105,11 @@ class CambioContexto:
 
             Luego actualiza UI y reinicia ciclo.
             """
-
+            
             if proc.tiempoRestante > 0:
 
                 if rd.random() < 0.1:
                     proc.estado = "ESPERANDO I/O"
-                    self.cola.append(proc)
-
                 else:
                     proc.estado = "LISTO"
                     self.cola.append(proc)
@@ -125,3 +123,5 @@ class CambioContexto:
             self.root.after(1000, self.ejecutar)
 
         self.root.after(tiempo * 1000, despues)
+
+    

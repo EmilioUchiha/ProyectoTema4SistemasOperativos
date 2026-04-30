@@ -45,11 +45,9 @@ class Vista:
         self.root = root
         self.root.title("Simulador Cambio de contexto MVC")
 
-        # Configuración de grid para alineación tipo tabla
         for i in range(6):
             self.root.grid_columnconfigure(i, weight=1)
 
-        # Entrada de datos
         tk.Label(root, text="Cantidad procesos:").grid(row=0, column=0)
 
         self.entry = tk.Entry(root)
@@ -58,7 +56,6 @@ class Vista:
         self.btn = tk.Button(root, text="Iniciar")
         self.btn.grid(row=0, column=2)
 
-        # Encabezados de tabla principal
         headers = ["PID", "Nombre", "CPU", "RAM", "Estado", "Tiempo"]
 
         for i, h in enumerate(headers):
@@ -72,7 +69,6 @@ class Vista:
 
         self.labels = []
 
-        # Título de cola de procesos
         tk.Label(
             self.root,
             text="COLA DE PROCESOS",
@@ -110,7 +106,6 @@ class Vista:
             lbl_state.grid(row=i+2, column=4, sticky="nsew")
             lbl_time.grid(row=i+2, column=5, sticky="nsew")
 
-            # Guardamos referencias para actualización dinámica
             self.labels.append((lbl_cpu, lbl_ram, lbl_state, lbl_time))
 
     def actualizar(self, procesos):
@@ -170,7 +165,6 @@ class Vista:
 
         self.cola_labels.clear()
 
-        # Encabezados de la cola
         tk.Label(
             self.root,
             text="PID",
@@ -187,7 +181,6 @@ class Vista:
             bg="gray"
         ).grid(row=101, column=1, sticky="nsew")
 
-        # Render de cola
         for i, p in enumerate(cola):
 
             lbl_pid = tk.Label(
